@@ -7,16 +7,21 @@ import org.example.miasta2.model.Section;
 import org.example.miasta2.repository.RestaurantRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@CrossOrigin
 public class RestaurantController {
     private final RestaurantRepository restaurantRepository;
+    static List<String> cities= Arrays.asList("wadowice","krakow","warszawa");
+
     @GetMapping("/api")
     public ResponseEntity<ResponseModel> getRestaurantsByCity(@RequestParam("miasto") String city) {
         List<Restaurant> restaurants = restaurantRepository.findAllByCity(city);
@@ -31,6 +36,10 @@ public class RestaurantController {
                     .build());
         }
         return new ResponseEntity<>(model, org.springframework.http.HttpStatus.OK);
+    }
+    @GetMapping("api/miasta")
+    public ResponseEntity<List<String>> getCities(){
+        return ResponseEntity.ok(cities);
     }
 
 }
